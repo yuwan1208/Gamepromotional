@@ -1,0 +1,9 @@
+# Exclude large video assets
+assets/videos/*
+# OS files
+.DS_Store
+Thumbs.db
+# IDE/editor caches
+.vscode/
+*.log
+node_modules/
