@@ -1,0 +1,693 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="The Forgotten Village Game Design Document">
+    <title>Game Design Document | The Forgotten Village</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+    <style>
+        :root {
+            --bg: #101116;
+            --panel: #0b0c10;
+            --gold: #e7c46d;
+            --gold2: #a98a48;
+            --text: #eeeae2;
+            --muted: #b7b3ad;
+            --line: rgba(231, 196, 109, .22)
+        }
+
+        * {
+            box-sizing: border-box
+        }
+
+        html {
+            scroll-behavior: smooth;
+            scroll-padding-top: 95px
+        }
+
+        body {
+            margin: 0;
+            background: var(--bg);
+            color: var(--text);
+            font: 15px/1.75 Inter, Arial, sans-serif
+        }
+
+        a {
+            color: inherit
+        }
+
+        .header {
+            position: sticky;
+            top: 0;
+            z-index: 5;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 20px;
+            padding: 18px 5vw;
+            background: #08090cf5;
+            border-bottom: 1px solid var(--line)
+        }
+
+        .brand {
+            font: 700 14px Cinzel, serif;
+            letter-spacing: .12em;
+            text-decoration: none
+        }
+
+        .brand b {
+            color: var(--gold)
+        }
+
+        .back {
+            color: var(--gold);
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: .12em;
+            text-decoration: none;
+            text-transform: uppercase
+        }
+
+        .hero {
+            text-align: center;
+            padding: 82px 20px 66px;
+            background: radial-gradient(ellipse at top, rgba(169, 138, 72, .15), transparent 60%);
+            border-bottom: 1px solid var(--line)
+        }
+
+        .eyebrow,
+        .kicker {
+            color: var(--gold);
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: .22em;
+            text-transform: uppercase
+        }
+
+        h1,
+        h2,
+        h3 {
+            font-family: Cinzel, Georgia, serif;
+            line-height: 1.25
+        }
+
+        h1 {
+            font-size: clamp(36px, 6vw, 68px);
+            margin: 18px 0
+        }
+
+        h1 span,
+        h2 span {
+            color: var(--gold)
+        }
+
+        .hero p:last-child {
+            max-width: 720px;
+            margin: auto;
+            color: var(--muted)
+        }
+
+        .layout {
+            width: min(1160px, calc(100% - 40px));
+            margin: 48px auto 80px;
+            display: grid;
+            grid-template-columns: 245px minmax(0, 1fr);
+            gap: 38px;
+            align-items: start
+        }
+
+        .toc {
+            position: sticky;
+            top: 100px;
+            background: var(--panel);
+            border: 1px solid var(--line);
+            padding: 22px
+        }
+
+        .toc h2 {
+            font-size: 16px;
+            color: var(--gold);
+            margin: 0 0 12px
+        }
+
+        .toc a {
+            display: block;
+            padding: 7px 0;
+            color: var(--muted);
+            font-size: 12px;
+            text-decoration: none;
+            border-bottom: 1px solid #ffffff0d
+        }
+
+        .toc a:hover {
+            color: var(--gold)
+        }
+
+        section.doc {
+            padding-bottom: 38px;
+            margin-bottom: 38px;
+            border-bottom: 1px solid var(--line)
+        }
+
+        section.doc:last-child {
+            border: 0
+        }
+
+        .num {
+            color: var(--gold2);
+            font: 600 12px Cinzel, serif;
+            letter-spacing: .15em
+        }
+
+        h2 {
+            font-size: clamp(24px, 3vw, 33px);
+            margin: 8px 0 16px
+        }
+
+        h3 {
+            font-size: 18px;
+            margin: 22px 0 8px
+        }
+
+        p,
+        li {
+            color: var(--muted)
+        }
+
+        .lead {
+            font-size: 17px;
+            color: var(--text)
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 13px;
+            margin-top: 18px
+        }
+
+        .card {
+            background: var(--panel);
+            border: 1px solid var(--line);
+            padding: 18px
+        }
+
+        .card strong {
+            display: block;
+            color: var(--gold);
+            font: 600 15px Cinzel, serif;
+            margin-bottom: 7px
+        }
+
+        .card p {
+            font-size: 13px;
+            margin: 0
+        }
+
+        .quote {
+            margin: 20px 0;
+            padding: 16px 20px;
+            background: var(--panel);
+            border-left: 3px solid var(--gold);
+            font: 16px Cinzel, serif
+        }
+
+        .chapter-label {
+            color: var(--gold2);
+            font-size: 10px;
+            letter-spacing: .15em;
+            text-transform: uppercase
+        }
+
+        .objective {
+            margin-top: 10px;
+            padding: 9px 12px;
+            background: #17181e;
+            border: 1px solid #e7c46d20;
+            color: var(--text);
+            font-size: 13px
+        }
+
+        .note {
+            padding: 16px 18px;
+            background: #e7c46d0c;
+            border: 1px solid var(--line);
+            font-size: 13px;
+            color: var(--muted)
+        }
+
+        footer {
+            text-align: center;
+            padding: 28px;
+            background: #090a0d;
+            border-top: 1px solid var(--line);
+            font-size: 12px;
+            color: var(--muted)
+        }
+
+        footer a {
+            color: var(--gold);
+            text-decoration: none
+        }
+
+        @media(max-width:800px) {
+            .layout {
+                grid-template-columns: 1fr
+            }
+
+            .toc {
+                position: static
+            }
+
+            .toc nav {
+                display: grid;
+                grid-template-columns: repeat(2, 1fr);
+                gap: 0 14px
+            }
+        }
+
+        @media(max-width:520px) {
+            .header {
+                padding: 14px
+            }
+
+            .brand {
+                font-size: 10px
+            }
+
+            .hero {
+                padding: 60px 18px
+            }
+
+            .layout {
+                width: calc(100% - 28px);
+                margin-top: 26px
+            }
+
+            .grid,
+            .toc nav {
+                grid-template-columns: 1fr
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <header class="header">
+        <a class="brand" href="index.html#home"><b>✦</b> THE FORGOTTEN VILLAGE</a>
+        <a class="back" href="index.html#devlog">← Back to Documents</a>
+    </header>
+    <div class="hero">
+        <div class="eyebrow">Official Game Documentation</div>
+        <h1>GAME DESIGN <span>DOCUMENT</span></h1>
+        <p>The Forgotten Village — its premise, story, characters, chapters, quests, and known locations.</p>
+    </div>
+    <div class="layout">
+        <aside class="toc">
+            <h2>Contents</h2>
+            <nav>
+                <a href="#overview">01 · Game Overview</a>
+                <a href="#background">02 · Background Story</a>
+                <a href="#characters">03 · Characters</a>
+                <a href="#story">04 · Story Progression</a>
+                <a href="#chapters">05 · Chapters & Quests</a>
+                <a href="#world">06 · World & Locations</a>
+                <a href="#enemies">07 · Enemies & Threats</a>
+                <a href="#objectives">08 · Main Objectives</a>
+                <a href="#requirements">09 · System Requirements</a>
+                <a href="#notes">10 · Documentation Notes</a>
+            </nav>
+        </aside>
+        <main>
+            <section class="doc" id="overview">
+                <div class="num">01 / OVERVIEW</div>
+                <h2>Game <span>Overview</span></h2>
+                <p class="lead"><em>The Forgotten Village</em> is a dark fantasy adventure centered on a mysterious
+                    undead invasion, the disappearance of villagers, and a rescue mission that reveals a greater danger
+                    beneath the mountains.</p>
+                <div class="grid">
+                    <div class="card"><strong>Game Title</strong>
+                        <p>The Forgotten Village</p>
+                    </div>
+                    <div class="card">
+                        <strong>Genre / Setting</strong>
+                        <p>
+                            Adventure RPG, Dark Fantasy, and Action-Adventure.
+                            The game features exploration, combat encounters,
+                            quest progression, undead enemies, and mysterious
+                            locations within a dark fantasy world.
+                        </p>
+                    </div>
+                    <div class="card"><strong>Main Objective</strong>
+                        <p>Find the missing villager, uncover the truth behind the undead invasion, and confront the
+                            threat connected to the Giant Golem.</p>
+                    </div>
+                    <div class="card"><strong>Central Conflict</strong>
+                        <p>Villagers are disappearing while skeletons and zombies appear around the abandoned
+                            settlement.</p>
+                    </div>
+                </div>
+            </section>
+            <section class="doc" id="background">
+                <div class="num">02 / BACKGROUND</div>
+                <h2>Background <span>Story</span></h2>
+                <p>Several years ago, the Forgotten Village was one of the kingdom's most peaceful settlements. Its
+                    people lived through farming, trading, and hunting.</p>
+                <p>Everything changed after a mysterious earthquake shook the mountains nearby. Strange events followed:
+                    voices came from the forest, animals disappeared without tracks, bodies vanished from the cemetery,
+                    skeletons and zombies appeared at night, and villagers began disappearing.</p>
+                <p>The village guards could not stop the growing number of undead creatures. Most residents fled to
+                    nearby settlements, while only a few remained.</p>
+                <p>One night, a young villager named Thomas approached the player for help. His older sister had
+                    disappeared after entering the abandoned village while searching for their father. Thomas believes
+                    she may still be alive because he sometimes hears her voice coming from the village.</p>
+                <div class="quote">The player's journey begins with a request for help — and leads toward a secret
+                    buried beneath the mountain.</div>
+            </section>
+            <section class="doc" id="characters">
+                <div class="num">03 / CHARACTERS</div>
+                <h2>Main <span>Characters</span></h2>
+                <div class="grid">
+                    <div class="card"><strong>The Player</strong>
+                        <p>The character controlled by the player. They accept Thomas's request, investigate the
+                            abandoned areas, face the undead, and help rescue Anna.</p>
+                    </div>
+                    <div class="card"><strong>Thomas</strong>
+                        <p>A young villager who asks the player to find his missing older sister. She went looking for
+                            their father and did not return.</p>
+                    </div>
+                    <div class="card"><strong>Anna</strong>
+                        <p>Thomas's older sister. She is found among the villagers held underground and warns the player
+                            about the Ancient Guardian.</p>
+                    </div>
+                    <div class="card"><strong>The Necromancer</strong>
+                        <p>The antagonist in the underground crypt. He has been kidnapping villagers and using dark
+                            magic to create an undead army.</p>
+                    </div>
+                    <div class="card"><strong>The Giant Golem</strong>
+                        <p>Also called the Ancient Guardian. It is the greater threat beneath the mountain. The story
+                            reveals that it is awakening, but does not show it being defeated.</p>
+                    </div>
+                </div>
+            </section>
+            <section class="doc" id="story">
+                <div class="num">04 / STORY</div>
+                <h2>Story <span>Progression</span></h2>
+                <h3>The Missing Sister</h3>
+                <p>At the village entrance, Thomas explains that Anna went into the Forgotten Village three days earlier
+                    while searching for their father. She had mentioned strange lights coming from the old forest.
+                    Thomas asks the player to find her, beginning the objective to investigate the Forgotten Forest.</p>
+                <h3>The Search Through the Forgotten Areas</h3>
+                <p>The player travels through the forest and abandoned village, encounters undead creatures, and finds
+                    clues about what happened to the settlement. These clues lead toward an underground crypt.</p>
+                <h3>The Necromancer's Secret</h3>
+                <p>Inside the crypt, the player discovers that the Necromancer has been kidnapping villagers and using
+                    dark magic to create an undead army. The player confronts him and finds Anna and other trapped
+                    villagers.</p>
+                <h3>The Truth Beneath the Mountain</h3>
+                <p>Anna explains that the Necromancer was gathering people to awaken something buried beneath the
+                    mountain: the Ancient Guardian. The ground begins shaking, the dungeon walls crack, and the player
+                    helps the villagers escape through an underground passage.</p>
+                <h3>A Warning of the Giant Golem</h3>
+                <p>Back at the village, Thomas and Anna reunite. Anna explains that the Necromancer feared the Giant
+                    Golem and could not control its power. A distant roar echoes from the mountains, and a gigantic
+                    shadow moves behind them. The story ends with the greater threat still looming.</p>
+            </section>
+            <section class="doc" id="chapters">
+                <div class="num">05 / CHAPTERS</div>
+                <h2>Chapters & <span>Quests</span></h2>
+                <div class="grid">
+                    <div class="card">
+                        <div class="chapter-label">Quest Introduction</div><strong>The Missing Sister</strong>
+                        <p><b>Location:</b> Village Entrance</p>
+                        <p>Meet Thomas and accept his request to find Anna.</p>
+                        <div class="objective">Objective: Investigate the Forgotten Forest.</div>
+                    </div>
+                    <div class="card">
+                        <div class="chapter-label">Chapter One</div><strong>The Forest of the Dead</strong>
+                        <p>The player enters a silent forest, encounters skeleton warriors, and discovers an abandoned
+                            campsite and an old journal inside a watchtower.</p>
+                        <div class="objective">Objective: Defeat 40 Skeleton Warriors.</div>
+                    </div>
+                    <div class="card">
+                        <div class="chapter-label">Chapter Two</div><strong>The Village That Never Sleeps</strong>
+                        <p>The player explores the damaged village, sees strange symbols on walls, and encounters
+                            zombies inside abandoned houses.</p>
+                        <div class="objective">Objective: Defeat 20 Zombies.</div>
+                    </div>
+                    <div class="card">
+                        <div class="chapter-label">Chapter Three</div><strong>The Necromancer's Secret</strong>
+                        <p>The player discovers the Necromancer's role in the disappearances and the creation of the
+                            undead army.</p>
+                        <div class="objective">Objective: Defeat the Necromancer and rescue Thomas's sister.</div>
+                    </div>
+                    <div class="card">
+                        <div class="chapter-label">Chapter Four</div><strong>The Truth Beneath the Mountain</strong>
+                        <p>Anna reveals the Necromancer's plan involving the Ancient Guardian. A disturbance begins as
+                            the buried threat awakens.</p>
+                        <div class="objective">Objective: Help the rescued villagers escape through the underground
+                            passage.</div>
+                    </div>
+                    <div class="card">
+                        <div class="chapter-label">Quest Ending</div><strong>A Warning of the Giant Golem</strong>
+                        <p>Thomas and Anna reunite. The player learns that the Giant Golem is beyond the Necromancer's
+                            control.</p>
+                        <div class="objective">Story outcome: The villagers return while the Giant Golem remains a
+                            looming threat.</div>
+                    </div>
+                </div>
+            </section>
+            <section class="doc" id="world">
+                <div class="num">06 / WORLD</div>
+                <h2>Game World & <span>Locations</span></h2>
+                <div class="grid">
+                    <div class="card"><strong>Village Entrance</strong>
+                        <p>The starting location where Thomas approaches the player and explains that Anna is missing.
+                        </p>
+                    </div>
+                    <div class="card"><strong>Forgotten Forest</strong>
+                        <p>A quiet forest where the player encounters skeleton warriors and discovers an abandoned
+                            watchtower and campsite.</p>
+                    </div>
+                    <div class="card"><strong>Forgotten Village</strong>
+                        <p>An abandoned settlement with damaged gates, empty houses, wandering zombies, and strange
+                            symbols.</p>
+                    </div>
+                    <div class="card"><strong>Underground Crypt</strong>
+                        <p>A dungeon containing undead creatures, magical symbols, the Necromancer's chamber, and
+                            trapped villagers.</p>
+                    </div>
+                    <div class="card"><strong>Mountain Beneath the Village</strong>
+                        <p>The place associated with the Ancient Guardian, whose awakening is revealed near the end of
+                            the story.</p>
+                    </div>
+                </div>
+            </section>
+            <section class="doc" id="enemies">
+                <div class="num">07 / THREATS</div>
+                <h2>Enemies & <span>Antagonists</span></h2>
+                <div class="grid">
+                    <div class="card"><strong>Skeleton Warriors</strong>
+                        <p>Undead enemies encountered in the Forgotten Forest. Chapter One sets an objective to defeat
+                            40.</p>
+                    </div>
+                    <div class="card"><strong>Zombies</strong>
+                        <p>Undead creatures found wandering through the abandoned village. Chapter Two sets an objective
+                            to defeat 20.</p>
+                    </div>
+                    <div class="card"><strong>The Necromancer</strong>
+                        <p>A magical antagonist who fires projectiles toward the player and can restore some health if
+                            the player takes too long to defeat him.</p>
+                    </div>
+                    <div class="card"><strong>The Giant Golem / Ancient Guardian</strong>
+                        <p>A powerful being buried beneath the mountain. Its awakening is foreshadowed at the end of the
+                            current story.</p>
+                    </div>
+                </div>
+            </section>
+            <section class="doc" id="objectives">
+                <div class="num">08 / OBJECTIVES</div>
+                <h2>Main <span>Objectives</span></h2>
+                <ol>
+                    <li>Meet Thomas at the village entrance and accept his request.</li>
+                    <li>Investigate the Forgotten Forest.</li>
+                    <li>Defeat the skeleton warriors and search the abandoned watchtower.</li>
+                    <li>Explore the Forgotten Village and defeat the zombies.</li>
+                    <li>Enter the underground crypt and uncover the Necromancer's secret.</li>
+                    <li>Defeat the Necromancer and rescue Anna and the other trapped villagers.</li>
+                    <li>Help the rescued villagers escape and return to the village.</li>
+                    <li>Learn the truth about the Giant Golem and the danger beneath the mountain.</li>
+                </ol>
+            </section>
+
+            <section class="doc" id="requirements">
+                <div class="num">09 / TECHNICAL NOTES</div>
+                <h2>System <span>Requirements</span></h2>
+
+                <p class="lead">
+                    The following specifications represent the proposed
+                    hardware and software requirements for playing
+                    The Forgotten Village on a Windows PC.
+                </p>
+
+                <h3>Minimum System Requirements</h3>
+
+                <div class="note">
+                    <b>Minimum Specifications</b> — The proposed baseline
+                    configuration for running the game.
+                </div>
+
+                <div class="grid">
+                    <div class="card">
+                        <strong>Operating System</strong>
+                        <p>Windows 10 (64-bit)</p>
+                    </div>
+
+                    <div class="card">
+                        <strong>Processor (CPU)</strong>
+                        <p>AMD Ryzen 3 2400G</p>
+                    </div>
+
+                    <div class="card">
+                        <strong>Memory (RAM)</strong>
+                        <p>8 GB RAM</p>
+                    </div>
+
+                    <div class="card">
+                        <strong>Graphics (GPU)</strong>
+                        <p>NVIDIA GeForce GTX series or equivalent</p>
+                    </div>
+
+                    <div class="card">
+                        <strong>Storage</strong>
+                        <p>5 GB available storage space</p>
+                    </div>
+
+                    <div class="card">
+                        <strong>DirectX</strong>
+                        <p>Version 11 compatible</p>
+                    </div>
+                </div>
+
+                <h3>Recommended System Requirements</h3>
+
+                <div class="note">
+                    <b>Recommended Specifications</b> — A higher
+                    configuration intended to provide a smoother
+                    gameplay experience.
+                </div>
+
+                <div class="grid">
+                    <div class="card">
+                        <strong>Operating System</strong>
+                        <p>Windows 10 / Windows 11 (64-bit)</p>
+                    </div>
+
+                    <div class="card">
+                        <strong>Processor (CPU)</strong>
+                        <p>AMD Ryzen 5 3600 or Intel Core i5 (9th Generation or higher)</p>
+                    </div>
+
+                    <div class="card">
+                        <strong>Memory (RAM)</strong>
+                        <p>16 GB RAM</p>
+                    </div>
+
+                    <div class="card">
+                        <strong>Graphics (GPU)</strong>
+                        <p>NVIDIA GeForce GTX 1660 or higher</p>
+                    </div>
+
+                    <div class="card">
+                        <strong>Storage</strong>
+                        <p>10 GB available storage space</p>
+                    </div>
+
+                    <div class="card">
+                        <strong>DirectX</strong>
+                        <p>Version 11 compatible</p>
+                    </div>
+                </div>
+
+                <h3>Development Information</h3>
+
+                <div class="grid">
+                    <div class="card">
+                        <strong>Game Engine</strong>
+                        <p>Unity</p>
+                    </div>
+
+                    <div class="card">
+                        <strong>Project Template</strong>
+                        <p>Universal 3D</p>
+                    </div>
+
+                    <div class="card">
+                        <strong>Rendering Pipeline</strong>
+                        <p>Universal Render Pipeline (URP)</p>
+                    </div>
+
+                    <div class="card">
+                        <strong>Target Platform</strong>
+                        <p>Windows PC / Laptop</p>
+                    </div>
+                </div>
+
+                <div class="note">
+                    <b>Disclaimer:</b> These are proposed system
+                    specifications and have not yet been verified
+                    through final game performance testing. Actual
+                    performance may vary depending on hardware,
+                    graphics settings, and background applications.
+                    Storage requirements may also change depending
+                    on the final game build.
+                </div>
+            </section>
+
+            <section class="doc" id="notes">
+                <div class="num">10 / DOCUMENT STATUS</div>
+                <h2>Documentation <span>Notes</span></h2>
+
+                <p>
+                    This page is based on the storyline and project
+                    information supplied for The Forgotten Village.
+                    It records the narrative, named characters,
+                    locations, chapter objectives, gameplay threats,
+                    and proposed technical specifications.
+                </p>
+
+                <div class="note">
+                    <b>Project Technical Information:</b>
+                    The game is developed using Unity with the
+                    Universal 3D project template and Universal
+                    Render Pipeline (URP).
+
+                    <br><br>
+
+                    The system requirements listed on this page
+                    are proposed specifications and remain subject
+                    to confirmation through actual game testing.
+
+                    <br><br>
+
+                    <b>Details still to be confirmed:</b>
+                    Final game engine version, exact GPU compatibility,
+                    verified minimum and recommended hardware,
+                    final storage requirements, player controls,
+                    complete gameplay rules, level maps, testing
+                    results, known bugs, and version history.
+                </div>
+            </section>
+        </main>
+    </div>
+    <footer>THE FORGOTTEN VILLAGE · GAME DESIGN DOCUMENT<br><a href="index.html#devlog">Return to the official
+            website</a></footer>
+</body>
+
+</html>
