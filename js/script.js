@@ -51,7 +51,8 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   const trailerModal = document.getElementById("trailerModal");
-  const trailerVideo = document.getElementById("trailerVideo");
+  const trailerFrame = document.getElementById("trailerFrame");
+  const trailerEmbedUrl = "https://www.youtube-nocookie.com/embed/er7Fj6s3JPU?autoplay=1&playsinline=1&rel=0";
   const watchTrailerBtn = document.getElementById("watchTrailer");
   const imageModal = document.getElementById("imageModal");
   const lightboxImage = document.getElementById("lightboxImage");
@@ -104,9 +105,8 @@ document.addEventListener("DOMContentLoaded", () => {
     modal.classList.remove("open");
     modal.setAttribute("aria-hidden", "true");
 
-    if (modal === trailerModal && trailerVideo) {
-      trailerVideo.pause();
-      trailerVideo.currentTime = 0;
+    if (modal === trailerModal && trailerFrame) {
+      trailerFrame.removeAttribute("src");
     }
     if (modal === imageModal && lightboxImage) {
       lightboxImage.src = "";
@@ -123,16 +123,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
   if (watchTrailerBtn) {
     watchTrailerBtn.addEventListener("click", () => {
+      if (trailerFrame) trailerFrame.src = trailerEmbedUrl;
       openModal(trailerModal);
-      if (trailerVideo) {
-        trailerVideo.currentTime = 0;
-        const playPromise = trailerVideo.play();
-        if (playPromise !== undefined) {
-          playPromise.catch(err => {
-            console.log("Trailer play requested:", err);
-          });
-        }
-      }
     });
   }
 

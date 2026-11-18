@@ -12,6 +12,6 @@
   - `combatimage.png`: Combat Gameplay
   - `EnvironmentConcept.png`: Environment Concept Art
   - `skill showcase.png`: Skill Showcase
-- Trailer: Local MP4 video stored at `assets/videos/game-trailer.mp4`.
+- Trailer: [Watch on YouTube](https://youtu.be/er7Fj6s3JPU).
 
 The game client, WebGL demo, and PDF documents are not available yet, so their buttons/content show clear placeholder status. The contact form validates locally but does not transmit data.
