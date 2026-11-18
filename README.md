@@ -1,4 +1,4 @@
-# GamePromoWebsite — Prism's Illusion prototype
+# Gamepromotional — Prism's Illusion prototype
 
 ## Run locally
 1. Open this folder in VS Code.
